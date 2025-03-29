@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click the Circle Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f8ff;
+    }
+    h1 {
+      margin: 20px 0;
+    }
+    #gameArea {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      margin: 0 auto;
+      border: 2px solid #333;
+      background-color: #fff;
+    }
+    .circle {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-color: #ff4500;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    #score, #timer {
+      font-size: 1.5em;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Click the Circle Game</h1>
+  <div id="score">Score: 0</div>
+  <div id="timer">Time: 30s</div>
+  <div id="gameArea"></div>
+  <script>
+    const gameArea = document.getElementById('gameArea');
+    const scoreDisplay = document.getElementById('score');
+    const timerDisplay = document.getElementById('timer');
+    let score = 0;
+    let timeLeft = 30;
+
+    // Create a circle
+    const circle = document.createElement('div');
+    circle.className = 'circle';
+    gameArea.appendChild(circle);
+
+    // Move circle to a random position
+    function moveCircle() {
+      const maxX = gameArea.clientWidth - circle.clientWidth;
+      const maxY = gameArea.clientHeight - circle.clientHeight;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+      circle.style.left = `${randomX}px`;
+      circle.style.top = `${randomY}px`;
+    }
+
+    // Update score when circle is clicked
+    circle.addEventListener('click', () => {
+      score++;
+      scoreDisplay.textContent = `Score: ${score}`;
+      moveCircle();
+    });
+
+    // Start the timer
+    const timer = setInterval(() => {
+      timeLeft--;
+      timerDisplay.textContent = `Time: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        alert(`Game over! Your score is ${score}.`);
+        circle.style.pointerEvents = 'none'; // Disable clicking
+      }
+    }, 1000);
+
+    // Start game
+    moveCircle();
+  </script>
+</body>
+</html>
